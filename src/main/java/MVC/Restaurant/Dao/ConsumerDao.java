@@ -10,7 +10,7 @@ import MVC.Restaurant.Model.Consumer;
 public class ConsumerDao implements ImplDao {
 	
 	public static void main(String[] args) {
-		Consumer consumer=new Consumer("1號顧客","091234678","台北");
+		Consumer consumer=new Consumer("123","66","1號顧客","091234678","台北");
 		new ConsumerDao().add(consumer);
 	}
 
@@ -23,13 +23,15 @@ public class ConsumerDao implements ImplDao {
 		 * 4.java語法 ->更新指令
 		 * */
 		Connection conn=DbConection.getDB();
-		String SQL="insert into Consumer(name,phone,address)values(?,?,?)";
+		String SQL="insert into Consumer(username,password,name,phone,address)values(?,?,?,?,?)";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(SQL);
-			ps.setString(1,consumer.getName());
-			ps.setString(2,consumer.getPhone());
-			ps.setString(3,consumer.getAddress());
+			ps.setString(1,consumer.getUsername());
+			ps.setString(2,consumer.getPassword());
+			ps.setString(3,consumer.getName());
+			ps.setString(4,consumer.getPhone());
+			ps.setString(5,consumer.getAddress());
 			
 			ps.executeUpdate();
 		} catch (SQLException e) {
@@ -55,7 +57,7 @@ public class ConsumerDao implements ImplDao {
 			PreparedStatement ps =conn.prepareStatement(SQL);
 			
 			ResultSet rs = ps.executeQuery();
-			while(rs.next())
+			while(rs.next()) //next為boolean--->有資料才會撈。
 			{
 				System.out.println(rs.getString("name"));
 			}
@@ -67,6 +69,51 @@ public class ConsumerDao implements ImplDao {
 		
 		
 		return show;
+	}
+
+	@Override
+	public boolean queryUser(String username, String password) {
+		Connection conn = DbConection.getDB();
+		String sql="select * from Consumer where username=? and password=?";
+		boolean ans = false;
+		try {
+			PreparedStatement ps= conn.prepareStatement(sql);
+			ps.setString(1, username);
+			ps.setString(2, password);
+			
+			ResultSet rs=ps.executeQuery();
+			if(rs.next()) ans=true;
+		
+		
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}	
+		
+		return ans;
+	}
+
+	@Override
+	public boolean queryRepeat(String username) {
+		Connection conn=DbConection.getDB();
+		String sql="select * from Consumer where username=?";	
+		boolean ans=false;
+		
+		try {
+			PreparedStatement ps= conn.prepareStatement(sql);
+			ps.setString(1, username);
+			
+			
+			ResultSet rs=ps.executeQuery();
+			if(rs.next()) ans=true;
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
+		return ans;
 	}
 
 }

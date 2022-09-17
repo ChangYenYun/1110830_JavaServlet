@@ -3,6 +3,8 @@ package MVC.Restaurant.Model;
 public class Consumer {
 	
 	private Integer id;
+	private String username;
+	private String password;
 	private String name;
 	private String phone;
 	private String address;
@@ -11,12 +13,42 @@ public class Consumer {
 		super();
 	}
 
-	public Consumer(String name, String phone, String address) {
+	
+
+	public String getUsername() {
+		return username;
+	}
+
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+
+	public Consumer(String username, String password, String name, String phone, String address) {
 		super();
+		this.username = username;
+		this.password = password;
 		this.name = name;
 		this.phone = phone;
 		this.address = address;
 	}
+
+
 
 	public Integer getId() {
 		return id;
